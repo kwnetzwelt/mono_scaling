@@ -225,7 +225,11 @@ namespace Scaling
 	 
 			// normalization
 			double norm = kernelx.normalizer*kernely.normalizer;
-			rc/=norm; gc/=norm; bc/=norm;
+			
+			rc/=norm;
+			gc/=norm;
+			bc/=norm;
+			ac/=norm;
 			
 			// return in argb format
 			float r = (float)System.Math.Min(1.0,System.Math.Max(0,rc));
