@@ -199,13 +199,26 @@ namespace Scaling
 			ArrayFill<float>(tmpbuffer_b, 0);
 	 		ArrayFill<float>(tmpbuffer_a, 0);
 			
-			// pass 1 : horizontal convolution of image lines aree stored in tmpbuffer
+            // pass 1 : horizontal convolution of image lines are stored in tmpbuffer
 			for(int dy=-halfwindowy;dy<=halfwindowy;dy++) {
-				if (y+dy<0 || y+dy>=m_height) continue;
+
+                // Handle wrapping
+                int yOffset = 0;
+                if (y + dy < 0)
+                    yOffset = m_height;
+                else if (y + dy >= m_height)
+                    yOffset = -m_height;
+
 				for(int dx=-halfwindowx;dx<=halfwindowx;dx++) {
-					if (x+dx<0 || x+dx>=m_width) continue;
+
+                    // Handle wrapping
+                    int xOffset = 0;
+                    if (x + dx < 0)
+                        xOffset = m_width;
+                    else if (x + dx >= m_width)
+                        xOffset = -m_width;
 					
-					SColor rgb = m_input[x+dx + (y+dy) * m_width];
+					SColor rgb = m_input[x+dx+xOffset + (y+dy+yOffset) * m_width];
 					
 					tmpbuffer_r[halfwindowy+dy] += kernelx.coefs[halfwindowx-dx] * rgb.r;
 					tmpbuffer_g[halfwindowy+dy] += kernelx.coefs[halfwindowx-dx] * rgb.g;
